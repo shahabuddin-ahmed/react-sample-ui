@@ -1,0 +1,60 @@
+@use "sass:list"; // ← import the list module
+
+$sizes: 0 0.25 0.5 1 1.5 3 5;
+
+@mixin spacingClasses() {
+    @each $size in $sizes {
+        // old: $i: index($sizes, $size) - 1;
+        $i: list.index($sizes, $size) - 1; // ← use list.index
+
+        $size: $size + rem;
+
+        .m-#{$i} {
+            margin: $size !important;
+        }
+        .ml-#{$i} {
+            margin-left: $size !important;
+        }
+        .mr-#{$i} {
+            margin-right: $size !important;
+        }
+        .mt-#{$i} {
+            margin-top: $size !important;
+        }
+        .mb-#{$i} {
+            margin-bottom: $size !important;
+        }
+        .mx-#{$i} {
+            margin-left: $size !important;
+            margin-right: $size !important;
+        }
+        .my-#{$i} {
+            margin-top: $size !important;
+            margin-bottom: $size !important;
+        }
+
+        .p-#{$i} {
+            padding: $size !important;
+        }
+        .pl-#{$i} {
+            padding-left: $size !important;
+        }
+        .pr-#{$i} {
+            padding-right: $size !important;
+        }
+        .pt-#{$i} {
+            padding-top: $size !important;
+        }
+        .pb-#{$i} {
+            padding-bottom: $size !important;
+        }
+        .px-#{$i} {
+            padding-left: $size !important;
+            padding-right: $size !important;
+        }
+        .py-#{$i} {
+            padding-top: $size !important;
+            padding-bottom: $size !important;
+        }
+    }
+}

@@ -1,0 +1,19 @@
+@use './base' as *;
+
+.preloader {
+  visibility: hidden;
+  opacity: 0;
+  height: 100vh;
+  overflow-y: hidden;
+  transition: .5s ease-in-out;
+
+  &.visible {
+    visibility: visible;
+    opacity: 1;
+    overflow-y: auto;
+  }
+}
+
+.MuiFormHelperText-contained {
+  margin-left: 0 !important;
+}

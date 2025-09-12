@@ -1,0 +1,8 @@
+@use './mixins' as *; // brings spacingClasses into scope
+
+@include spacingClasses();
+
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
