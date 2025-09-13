@@ -1,9 +1,12 @@
-import ThemeStore from "./themeStore";
+import { configureStore } from "@reduxjs/toolkit";
+import authReducer from "./slices/authSlice";
 
-const themeStore = new ThemeStore();
+export const store = configureStore({
+    reducer: {
+        auth: authReducer,
+    },
+    // middleware: (getDefault) => getDefault(), // customize if needed
+});
 
-const stores = {
-    themeStore,
-};
-
-export default stores;
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;

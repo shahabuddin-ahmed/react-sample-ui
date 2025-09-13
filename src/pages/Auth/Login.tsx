@@ -4,14 +4,11 @@ import { Button, Card, FormGroup, TextField } from "@mui/material";
 import { Formik, Form, type FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
-import { LOGIN } from "../../requests/auth";
 import { Notify } from "../../misc/common";
+import { useAppDispatch, useAppSelector } from "../../stores/hooks";
+import { loginUser } from "../../stores/slices/authSlice";
 
 type LoginValues = { email: string; password: string };
-type LoginResponse = {
-    status?: "failed" | "success" | string;
-    message?: string;
-};
 
 const LoginSchema = Yup.object({
     email: Yup.string().email("Must be a valid email").required("Required"),
@@ -20,17 +17,21 @@ const LoginSchema = Yup.object({
 
 const LoginForm: FC = () => {
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+    const { loading, error, isAuthenticated } = useAppSelector(
+        (state) => state.auth
+    );
 
     const handleSubmit = async (
         values: LoginValues,
         _helpers: FormikHelpers<LoginValues>
     ): Promise<void> => {
-        const res: LoginResponse = await LOGIN(values);
-        if (res.status === "failed") {
-            Notify(res.message ?? "Login failed", "error");
-        } else {
+        const res = await dispatch(loginUser(values));
+        if (loginUser.fulfilled.match(res)) {
             Notify("Login success", "success");
             navigate("/");
+        } else if (loginUser.rejected.match(res)) {
+            Notify(res.payload as string, "error");
         }
     };
 
@@ -86,13 +87,23 @@ const LoginForm: FC = () => {
                         alignItems="center"
                         justifyContent="space-between"
                     >
-                        <Button type="submit" variant="contained">
-                            Login
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            disabled={loading}
+                        >
+                            {loading ? "Logging in..." : "Login"}
                         </Button>
                         <p style={{ margin: 0 }}>
                             Not registered? <Link to="/register">Register</Link>
                         </p>
                     </Grid>
+
+                    {error && (
+                        <p style={{ color: "red", marginTop: "8px" }}>
+                            {error}
+                        </p>
+                    )}
                 </Form>
             )}
         </Formik>
@@ -102,20 +113,18 @@ const LoginForm: FC = () => {
 const Login: FC = () => {
     return (
         <div style={{ marginTop: 40, paddingTop: 40 }}>
-            <div style={{ marginTop: 40, paddingTop: 40 }}>
-                <Grid
-                    container
-                    spacing={2}
-                    justifyContent="center"
-                    alignItems="center"
-                >
-                    <Grid size={{ xs: 10, sm: 8, lg: 4 }}>
-                        <Card>
-                            <LoginForm />
-                        </Card>
-                    </Grid>
+            <Grid
+                container
+                spacing={2}
+                justifyContent="center"
+                alignItems="center"
+            >
+                <Grid size={{ xs: 10, sm: 8, lg: 4 }}>
+                    <Card>
+                        <LoginForm />
+                    </Card>
                 </Grid>
-            </div>
+            </Grid>
         </div>
     );
 };

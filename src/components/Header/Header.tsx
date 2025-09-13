@@ -11,12 +11,13 @@ import {
     MenuItem,
     Typography,
 } from "@mui/material";
+import { useAppDispatch, useAppSelector } from "../../stores/hooks";
+import { logout } from "../../stores/slices/authSlice";
 
 const Header: FC = () => {
-    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(
-        !!localStorage.getItem("accessToken")
-    );
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+    const { isAuthenticated } = useAppSelector((state) => state.auth);
 
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
@@ -27,10 +28,9 @@ const Header: FC = () => {
 
     const handleMenuClose = () => setAnchorEl(null);
 
-    const logout = () => {
-        localStorage.removeItem("accessToken");
-        setIsLoggedIn(false);
-        navigate("/");
+    const handleLogout = () => {
+        dispatch(logout()); // clears token + state
+        navigate("/"); // redirect home
     };
 
     return (
@@ -39,7 +39,7 @@ const Header: FC = () => {
                 <Toolbar disableGutters sx={{ minHeight: 64 }}>
                     {/* Left side */}
                     <Box sx={{ flexGrow: 1 }}>
-                        {isLoggedIn ? (
+                        {isAuthenticated ? (
                             <Button
                                 component={RouterLink}
                                 to="/"
@@ -56,9 +56,9 @@ const Header: FC = () => {
                     </Box>
 
                     {/* Right side */}
-                    {isLoggedIn ? (
+                    {isAuthenticated ? (
                         <Stack direction="row" spacing={1}>
-                            <Button onClick={logout} variant="outlined">
+                            <Button onClick={handleLogout} variant="outlined">
                                 Logout
                             </Button>
                         </Stack>
