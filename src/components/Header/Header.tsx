@@ -1,8 +1,16 @@
-import React, { useState } from "react";
-import type { FC } from "react";
+import React, { useState, type FC } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import { Grid, Menu, MenuItem, Button } from "@material-ui/core";
-import "./Header.scss";
+import {
+    AppBar,
+    Toolbar,
+    Container,
+    Stack,
+    Box,
+    Button,
+    Menu,
+    MenuItem,
+    Typography,
+} from "@mui/material";
 
 const Header: FC = () => {
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(
@@ -13,12 +21,11 @@ const Header: FC = () => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
 
-    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-        event.preventDefault();
+    const handleMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
     };
 
-    const handleClose = () => setAnchorEl(null);
+    const handleMenuClose = () => setAnchorEl(null);
 
     const logout = () => {
         localStorage.removeItem("accessToken");
@@ -27,58 +34,85 @@ const Header: FC = () => {
     };
 
     return (
-        <header className="site-header">
-            <div className="container">
-                <Grid
-                    container
-                    justifyContent="space-between"
-                    alignItems="center"
-                >
-                    <Grid item>
+        <AppBar position="static" color="default" elevation={1}>
+            <Container maxWidth="lg">
+                <Toolbar disableGutters sx={{ minHeight: 64 }}>
+                    {/* Left side */}
+                    <Box sx={{ flexGrow: 1 }}>
                         {isLoggedIn ? (
-                            <Button className="ml-3" onClick={logout}>
-                                Logout
+                            <Button
+                                component={RouterLink}
+                                to="/"
+                                color="inherit"
+                                sx={{ fontWeight: 700 }}
+                            >
+                                Campaign
                             </Button>
                         ) : (
-                            <>
-                                <Button
-                                    component={RouterLink}
-                                    to="/account"
-                                    className="ml-3"
-                                    onClick={handleClick}
-                                >
-                                    Account
-                                </Button>
-                                <Menu
-                                    id="basic-menu"
-                                    anchorEl={anchorEl}
-                                    open={open}
-                                    onClose={handleClose}
-                                    MenuListProps={{
-                                        "aria-labelledby": "basic-button",
-                                    }}
-                                >
-                                    <MenuItem
-                                        component={RouterLink}
-                                        to="/login"
-                                        onClick={handleClose}
-                                    >
-                                        Login
-                                    </MenuItem>
-                                    <MenuItem
-                                        component={RouterLink}
-                                        to="/register"
-                                        onClick={handleClose}
-                                    >
-                                        Registration
-                                    </MenuItem>
-                                </Menu>
-                            </>
+                            <Typography variant="h6" sx={{ fontWeight: 700 }}>
+                                Campaigns
+                            </Typography>
                         )}
-                    </Grid>
-                </Grid>
-            </div>
-        </header>
+                    </Box>
+
+                    {/* Right side */}
+                    {isLoggedIn ? (
+                        <Stack direction="row" spacing={1}>
+                            <Button onClick={logout} variant="outlined">
+                                Logout
+                            </Button>
+                        </Stack>
+                    ) : (
+                        <>
+                            <Button
+                                onClick={handleMenuClick}
+                                id="account-button"
+                                aria-controls={
+                                    open ? "account-menu" : undefined
+                                }
+                                aria-haspopup="true"
+                                aria-expanded={open ? "true" : undefined}
+                                variant="outlined"
+                            >
+                                Account
+                            </Button>
+                            <Menu
+                                id="account-menu"
+                                anchorEl={anchorEl}
+                                open={open}
+                                onClose={handleMenuClose}
+                                anchorOrigin={{
+                                    vertical: "bottom",
+                                    horizontal: "right",
+                                }}
+                                transformOrigin={{
+                                    vertical: "top",
+                                    horizontal: "right",
+                                }}
+                                MenuListProps={{
+                                    "aria-labelledby": "account-button",
+                                }}
+                            >
+                                <MenuItem
+                                    component={RouterLink}
+                                    to="/login"
+                                    onClick={handleMenuClose}
+                                >
+                                    Login
+                                </MenuItem>
+                                <MenuItem
+                                    component={RouterLink}
+                                    to="/register"
+                                    onClick={handleMenuClose}
+                                >
+                                    Registration
+                                </MenuItem>
+                            </Menu>
+                        </>
+                    )}
+                </Toolbar>
+            </Container>
+        </AppBar>
     );
 };
 

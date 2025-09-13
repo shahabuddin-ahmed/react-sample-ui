@@ -1,39 +1,36 @@
-import React, { type FC } from "react";
-import { Button, Card, FormGroup, Grid, TextField } from "@material-ui/core";
+import { type FC } from "react";
+import Grid from "@mui/material/Grid";
+import { Button, Card, FormGroup, TextField } from "@mui/material";
 import { Formik, Form, type FormikHelpers } from "formik";
 import * as Yup from "yup";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { LOGIN } from "../../requests/auth";
 import { Notify } from "../../misc/common";
 
-type LoginValues = {
-    email: string;
-    password: string;
-};
-
+type LoginValues = { email: string; password: string };
 type LoginResponse = {
     status?: "failed" | "success" | string;
     message?: string;
-    // add any other fields your API returns (token, user, etc.)
 };
 
-const LoginSchema = Yup.object().shape({
+const LoginSchema = Yup.object({
     email: Yup.string().email("Must be a valid email").required("Required"),
     password: Yup.string().min(8, "Invalid Password!").required("Required"),
 });
 
 const LoginForm: FC = () => {
+    const navigate = useNavigate();
+
     const handleSubmit = async (
         values: LoginValues,
         _helpers: FormikHelpers<LoginValues>
     ): Promise<void> => {
         const res: LoginResponse = await LOGIN(values);
-
         if (res.status === "failed") {
             Notify(res.message ?? "Login failed", "error");
         } else {
             Notify("Login success", "success");
-            window.location.href = "/"; // or use history.push("/") if you prefer
+            navigate("/");
         }
     };
 
@@ -44,10 +41,10 @@ const LoginForm: FC = () => {
             onSubmit={handleSubmit}
         >
             {({ errors, touched, handleChange, values, handleBlur }) => (
-                <Form autoComplete="off" className="p-4">
-                    <h4 className="mb-4">Login</h4>
+                <Form autoComplete="off" style={{ padding: 16 }}>
+                    <h4 style={{ marginBottom: 16 }}>Login</h4>
 
-                    <FormGroup className="mb-3">
+                    <FormGroup sx={{ mb: 2 }}>
                         <TextField
                             name="email"
                             variant="outlined"
@@ -65,7 +62,7 @@ const LoginForm: FC = () => {
                         />
                     </FormGroup>
 
-                    <FormGroup className="mb-3">
+                    <FormGroup sx={{ mb: 2 }}>
                         <TextField
                             type="password"
                             name="password"
@@ -86,19 +83,13 @@ const LoginForm: FC = () => {
 
                     <Grid
                         container
-                        direction="row"
-                        justifyContent="space-between"
                         alignItems="center"
-                        style={{ display: "flex", flexWrap: "wrap" }}
+                        justifyContent="space-between"
                     >
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            color="primary"
-                        >
+                        <Button type="submit" variant="contained">
                             Login
                         </Button>
-                        <p>
+                        <p style={{ margin: 0 }}>
                             Not registered? <Link to="/register">Register</Link>
                         </p>
                     </Grid>
@@ -110,19 +101,21 @@ const LoginForm: FC = () => {
 
 const Login: FC = () => {
     return (
-        <div className="my-5 pt-5">
-            <Grid
-                container
-                direction="row"
-                justifyContent="center"
-                alignItems="center"
-            >
-                <Grid item lg={4} sm={8} xs={10}>
-                    <Card>
-                        <LoginForm />
-                    </Card>
+        <div style={{ marginTop: 40, paddingTop: 40 }}>
+            <div style={{ marginTop: 40, paddingTop: 40 }}>
+                <Grid
+                    container
+                    spacing={2}
+                    justifyContent="center"
+                    alignItems="center"
+                >
+                    <Grid size={{ xs: 10, sm: 8, lg: 4 }}>
+                        <Card>
+                            <LoginForm />
+                        </Card>
+                    </Grid>
                 </Grid>
-            </Grid>
+            </div>
         </div>
     );
 };

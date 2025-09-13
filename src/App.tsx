@@ -1,13 +1,9 @@
-import React, { type FC } from "react";
+import { type FC } from "react";
 import { BrowserRouter } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import Routes from "./routes/Routes";
 import Manifest from "./manifest";
-import { ToastContainer } from "material-react-toastify";
-
-// CSS
-// import "react-toastify/dist/ReactToastify.css";
-import "./styles/style.scss";
+import { ToastContainer } from "react-toastify";
 
 import Header from "./components/Header/Header";
 

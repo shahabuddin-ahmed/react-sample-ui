@@ -1,5 +1,4 @@
-import React from "react";
-import { Button, Card, FormGroup, Grid, TextField } from "@material-ui/core";
+import { Button, Card, FormGroup, Grid, TextField } from "@mui/material";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { Link } from "react-router-dom";
@@ -119,14 +118,15 @@ const RegistrationForm = () => {
 
 const Registration = () => {
     return (
-        <div className="my-5 pt-5">
+        <div style={{ marginTop: 40, paddingTop: 40 }}>
             <Grid
                 container
+                spacing={2}
                 direction="row"
                 justifyContent="center"
                 alignItems="center"
             >
-                <Grid item lg={4} sm={8} xs={10}>
+                <Grid size={{ xs: 10, sm: 8, lg: 4 }}>
                     <Card>
                         <RegistrationForm />
                     </Card>

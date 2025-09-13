@@ -16,18 +16,8 @@ export function getAccessToken() {
 export async function LOGIN(payload: any) {
     try {
         const result = await axios.post(`${apiHost}/user/login`, payload);
-
-        if (result.data) {
-            if (result.data.data?.accessToken) {
-                localStorage.setItem(
-                    "accessToken",
-                    JSON.stringify(result.data.data.accessToken)
-                );
-            }
-            return result.data;
-        } else {
-            Alert("Oops!", "Something went wrong!", "error");
-        }
+        localStorage.setItem("accessToken", JSON.stringify(result.data.response.accessToken));
+        return result.data;
     } catch (error: any) {
         if (error?.response) {
             return {

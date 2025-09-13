@@ -1,9 +1,6 @@
 import swal from "sweetalert";
-import {
-    toast,
-    type ToastPosition,
-    type TypeOptions,
-} from "material-react-toastify";
+import { toast, type ToastPosition, type TypeOptions } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 /**
  * Show a SweetAlert modal
@@ -27,13 +24,6 @@ export function Alert(
     });
 }
 
-/**
- * Show a toast notification
- * @param msg - message text
- * @param type - toast type ("info", "success", "warning", "error", "default")
- * @param time - auto close time (ms)
- * @param position - toast position
- */
 export const Notify = (
     msg: string,
     type: TypeOptions = "info",
