@@ -12,7 +12,7 @@ const manifest: ManifestConfig = {
         "An app to start react coding with campaign, authentication, and dashboard features",
     keywords: "Starter app for react",
     author: "Shahabuddin Ahmed",
-    apiHost: "http://127.0.0.1:3000/api/v1",
+    apiHost: "http://localhost:3000/api/v1",
 };
 
 export default manifest;
