@@ -1,1 +1,1 @@
-# react-sample-ui
+# cognitus-frontend-test

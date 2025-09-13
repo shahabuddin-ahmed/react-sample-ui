@@ -10,11 +10,14 @@ const RegistrationSchema = Yup.object().shape({
     name: Yup.string().required("Required"),
     email: Yup.string().email("Must be a valid email").required("Required"),
     password: Yup.string().min(8, "Invalid Password!").required("Required"),
-    phoneNumber: Yup.string().required("Required"),
 });
 
 const RegistrationForm = () => {
-    const handleSubmit = async (values) => {
+    const handleSubmit = async (values: {
+        name: string;
+        email: string;
+        password: string;
+    }) => {
         let res = await REGISTER(values);
         if (res.status && res.status === "failed") {
             Notify(res.message, "error");
@@ -29,7 +32,6 @@ const RegistrationForm = () => {
                 name: "",
                 email: "",
                 password: "",
-                phoneNumber: "",
             }}
             validationSchema={RegistrationSchema}
             onSubmit={(values) => {
@@ -83,26 +85,6 @@ const RegistrationForm = () => {
                             }
                             error={
                                 errors.password && touched.password
-                                    ? true
-                                    : false
-                            }
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                        />
-                    </FormGroup>
-                    <FormGroup className="mb-3">
-                        <TextField
-                            name="phoneNumber"
-                            variant="outlined"
-                            label="Phone Number"
-                            value={values.phoneNumber}
-                            helperText={
-                                errors.phoneNumber && touched.phoneNumber
-                                    ? errors.phoneNumber
-                                    : ""
-                            }
-                            error={
-                                errors.phoneNumber && touched.phoneNumber
                                     ? true
                                     : false
                             }

@@ -15,7 +15,7 @@ export function getAccessToken() {
 
 export async function LOGIN(payload: any) {
     try {
-        const result = await axios.post(`${apiHost}/auth/login`, payload);
+        const result = await axios.post(`${apiHost}/user/login`, payload);
 
         if (result.data) {
             if (result.data.data?.accessToken) {
@@ -42,7 +42,7 @@ export async function LOGIN(payload: any) {
 
 export async function REGISTER(payload: any) {
     try {
-        const result = await axios.post(`${apiHost}/auth/register`, payload);
+        const result = await axios.post(`${apiHost}/user/signup`, payload);
 
         if (result && result.data) {
             return result.data;

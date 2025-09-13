@@ -1,25 +1,25 @@
 import { makeAutoObservable } from "mobx";
 
 export interface ThemeStoreUpdate {
-  showCartSidebar?: string;
+    showCartSidebar?: string;
 }
 
 class ThemeStore {
-  showCartSidebar: string = "close";
+    showCartSidebar: string = "close";
 
-  constructor() {
-    makeAutoObservable(this);
-  }
+    constructor() {
+        makeAutoObservable(this);
+    }
 
-  get model() {
-    return {
-      showCartSidebar: this.showCartSidebar,
-    };
-  }
+    get model() {
+        return {
+            showCartSidebar: this.showCartSidebar,
+        };
+    }
 
-  updateStore(object: ThemeStoreUpdate) {
-    this.showCartSidebar = object.showCartSidebar ?? this.showCartSidebar;
-  }
+    updateStore(object: ThemeStoreUpdate) {
+        this.showCartSidebar = object.showCartSidebar ?? this.showCartSidebar;
+    }
 }
 
 export default ThemeStore;
